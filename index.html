@@ -1,98 +1,338 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#fffaf6">
-  <meta name="description" content="A little note for Judy before her Pediatrics final.">
-  <title>For Judy, Doctor-to-be</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="judy.css">
-  <script src="script.js" defer></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#eaf7f6">
+<title>Aki, I have a plan 🐚</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --sand:#f6e9d4; --cream:#fffaf1; --foam:#cdeee9; --sea:#5fb8b0; --deep:#2e7f79;
+  --ink:#32494a; --soft:#6f8a8a; --rose:#e98f8f;
+  --hand:'Caveat','Bradley Hand','Segoe Script',cursive;
+  --body:'DM Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--body);color:var(--ink);background:var(--cream);line-height:1.55;
+  padding-bottom:env(safe-area-inset-bottom,0)}
+.hero{position:relative;min-height:100svh;display:grid;place-items:center;text-align:center;overflow:hidden;
+  padding:calc(40px + env(safe-area-inset-top,0)) 24px 140px;
+  background:linear-gradient(180deg,#eaf7f6 0%,#f7f1e2 70%,var(--sand) 100%)}
+.sun{position:absolute;top:8%;right:-60px;width:220px;height:220px;border-radius:50%;
+  background:radial-gradient(circle,#ffe9b8 0%,#ffe9b800 70%);filter:blur(2px)}
+.hero-content{position:relative;z-index:2;max-width:520px}
+.doodle{font-size:56px;animation:bob 3.2s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-8px) rotate(-6deg)}}
+.eyebrow{font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;color:var(--deep);font-weight:600;margin:12px 0 6px}
+h1{font-family:var(--hand);font-size:clamp(3rem,13vw,4.8rem);line-height:1;color:var(--deep);margin-bottom:14px}
+h2{font-family:var(--hand);font-size:clamp(2.2rem,8vw,3rem);line-height:1.05;color:var(--deep)}
+.intro{color:var(--soft);font-size:1.05rem;margin-bottom:28px}
+.btn-row{display:flex;gap:14px;justify-content:center;align-items:center;flex-wrap:wrap;min-height:64px}
+.button{font:600 1rem var(--body);border:0;border-radius:999px;padding:14px 28px;cursor:pointer;
+  background:var(--sea);color:#fff;box-shadow:0 8px 20px #5fb8b04d;transition:transform .2s,box-shadow .2s}
+.button:hover{transform:translateY(-2px)}
+#yes{transform:scale(var(--yes-scale,1))}
+#yes:hover{transform:scale(var(--yes-scale,1)) translateY(-2px)}
+#no{background:#fff;color:var(--soft);box-shadow:0 4px 14px #0000001a;
+  transition:left .28s cubic-bezier(.3,1.4,.5,1),top .28s cubic-bezier(.3,1.4,.5,1);z-index:50;touch-action:none}
+.no-slot{display:inline-block}
+.nohint{min-height:1.6em;margin-top:16px;color:var(--rose);font-weight:500}
+.wave{position:absolute;left:-10%;width:120%;border-radius:50%}
+.wave-one{bottom:-90px;height:170px;background:var(--foam);opacity:.8}
+.wave-two{bottom:-120px;height:170px;background:var(--sea);opacity:.35}
+.shell-note{position:absolute;bottom:90px;left:0;right:0;color:var(--deep);opacity:.5;z-index:1}
+
+.plan{max-width:640px;margin:0 auto;padding:64px 20px 80px}
+.plan.open{animation:rise .7s ease both}
+@keyframes rise{from{opacity:0;transform:translateY(24px)}}
+.section-heading{text-align:center;margin-bottom:32px}
+.section-heading p:last-child{color:var(--soft);margin-top:8px}
+fieldset{border:0;padding:0;margin-bottom:34px}
+legend{font-family:var(--hand);font-size:1.9rem;color:var(--deep);margin-bottom:4px}
+.step{display:inline-grid;place-items:center;width:32px;height:32px;border-radius:50%;background:var(--foam);
+  font:700 .8rem var(--body);margin-right:6px;vertical-align:middle}
+.hint{color:var(--soft);font-size:.95rem;margin-bottom:14px}
+.time-options{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.choice input,.place-card input{position:absolute;opacity:0;pointer-events:none}
+.choice span{display:block;text-align:center;padding:14px 4px;border-radius:16px;background:#fff;border:2px solid var(--foam);
+  font-weight:600;cursor:pointer;transition:.2s}
+.choice small{color:var(--soft);font-weight:500}
+.choice input:checked+span{background:var(--sea);border-color:var(--sea);color:#fff;transform:translateY(-2px)}
+.choice input:checked+span small{color:#fff}
+.choice input:focus-visible+span,.place-card input:focus-visible+label{outline:3px solid var(--deep);outline-offset:2px}
+.place-options{display:grid;gap:12px}
+.place-card{position:relative}
+.place-card label{display:flex;align-items:center;gap:14px;padding:16px;border-radius:20px;background:#fff;
+  border:2px solid var(--foam);cursor:pointer;transition:.2s}
+.place-card input:checked+label{border-color:var(--sea);background:#f1fbf9;box-shadow:0 8px 20px #5fb8b02e}
+.place-icon{font-size:1.7rem}
+.place-copy{flex:1}
+.place-copy strong{display:block}
+.place-copy small{color:var(--soft)}
+.check{color:var(--foam);font-size:1.4rem;transition:.2s}
+.place-card input:checked+label .check{color:var(--rose);transform:scale(1.2)}
+.place-card a{display:inline-block;margin:6px 0 0 18px;font-size:.85rem;color:var(--deep)}
+.submit{display:block;width:100%;font-size:1.05rem;padding:16px}
+
+.formerr{text-align:center;color:var(--rose);font-weight:600;margin:-10px 0 14px}
+.own-wrap{margin:8px 0 0 4px}
+.own-wrap input{width:100%;font:500 1rem var(--body);color:var(--ink);padding:14px 16px;border-radius:16px;
+  border:2px solid var(--sea);background:#fff;outline:none}
+.own-wrap input:focus{box-shadow:0 0 0 4px #5fb8b033}
+.place-card input[type=text]{position:static;opacity:1;pointer-events:auto}
+.ticket{position:relative;max-width:420px;margin:0 auto;background:#fff;border-radius:22px;padding:34px 26px 26px;
+  text-align:center;box-shadow:0 18px 40px #2e7f7926;border-top:14px solid var(--sea);animation:rise .6s ease both}
+.ticket::before{content:"";position:absolute;top:-14px;left:50%;width:14px;height:14px;transform:translateX(-50%);
+  border-radius:50%;background:var(--cream);box-shadow:0 0 0 3px var(--sea) inset}
+.ticket-icon{font-size:40px}
+.meet-note{margin:4px 0 15px;font-family:var(--hand);font-size:1.65rem;color:var(--rose)}
+.ticket-image{display:block;width:100%;max-height:500px;object-fit:cover;object-position:center 38%;border-radius:17px;margin:0 auto 18px;box-shadow:0 8px 22px #2e7f791c}
+.ticket h2{margin:4px 0 8px}
+.ticket .when{color:var(--soft)}
+.quote-card{margin:22px 0 6px;padding:16px 14px;border-radius:16px;background:#f3faf8;color:var(--deep)}
+.quote-card blockquote{font-family:var(--hand);font-size:1.55rem;line-height:1.2}
+.quote-card figcaption{margin-top:8px;color:var(--soft);font-size:.82rem}
+.quote-card a{color:var(--deep);font-weight:600}
+.dash{border:0;border-top:2px dashed var(--foam);margin:20px 0}
+.bring{list-style:none;padding:0;text-align:left;display:inline-block;color:var(--ink)}
+.bring li::before{content:"🐚 "}
+.ps{margin-top:16px;font-family:var(--hand);font-size:1.4rem;color:var(--rose)}
+.actions{display:grid;gap:10px;margin-top:20px}
+.button.wa{background:#25d366;box-shadow:0 8px 20px #25d3664d}
+.link{background:none;border:0;color:var(--soft);font:500 .9rem var(--body);cursor:pointer;text-decoration:underline}
+footer{text-align:center;padding:24px 20px calc(32px + env(safe-area-inset-bottom,0));color:var(--soft);font-size:.9rem}
+.confetti{position:fixed;top:-30px;z-index:99;pointer-events:none;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(360deg);opacity:.2}}
+.reveal{opacity:0;transform:translateY(18px);transition:.7s}
+.reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}.reveal{opacity:1;transform:none}}
+@media (max-width:420px){.time-options{grid-template-columns:repeat(2,1fr)}}
+</style>
 </head>
 <body>
-  <main>
-    <section class="hero full-screen" id="intro" aria-labelledby="intro-title">
-      <div class="hero-glow"></div>
-      <div class="hero-content">
-        <div class="stethoscope" aria-hidden="true">🩺</div>
-        <p class="eyebrow">For your big day</p>
-        <h1 id="intro-title">Hey, Judy. <br>Came a looong way huh?</h1>
-        <p class="hero-copy">Before your final hurdle tomorrow,<br>I need you to know something.</p>
-        <button class="button button-primary" data-scroll="journey">Open this</button>
-        <p class="tiny-note">a little note from someone who's proud of you</p>
+<main>
+  <section class="hero" aria-labelledby="title">
+    <div class="sun" aria-hidden="true"></div>
+    <div class="hero-content">
+      <div class="doodle" aria-hidden="true">🐚</div>
+      <p class="eyebrow">A tiny invitation, just for you</p>
+      <h1 id="title">Aki, I have a plan 🐚</h1>
+      <p class="intro" id="intro">A bookshop, a little wandering,<br>and some quality talk. You in?</p>
+      <div class="btn-row">
+        <button class="button" id="yes" type="button">Yes, I’m in ♡</button>
+        <span class="no-slot" id="slot"><button class="button" id="no" type="button" tabindex="-1" aria-disabled="true">No</button></span>
       </div>
-      <div class="scroll-hint" aria-hidden="true">↓</div>
-    </section>
+      <p class="nohint" id="nohint" aria-live="polite"></p>
+    </div>
+    <div class="wave wave-one" aria-hidden="true"></div><div class="wave wave-two" aria-hidden="true"></div>
+    <p class="shell-note" aria-hidden="true">☼　𓇼　☼</p>
+  </section>
 
-    <section class="section journey" id="journey" aria-labelledby="journey-title">
-      <div class="section-heading reveal"><p class="eyebrow">A look back</p><h2 id="journey-title">Look how far<br>you've come<span class="rose">...</span></h2><p>Every step brought you here.</p></div>
-      <div class="timeline">
-        <div class="timeline-line" aria-hidden="true"></div>
-        <article class="timeline-item reveal"><span class="timeline-icon">🎓</span><div><h3>Years of studying</h3><p>One page, one lecture, one day at a time.</p></div></article>
-        <article class="timeline-item reveal"><span class="timeline-icon">☕</span><div><h3>Sleepless nights</h3><p>And all the cups of coffee that came with them.</p></div></article>
-        <article class="timeline-item reveal"><span class="timeline-icon">📚</span><div><h3>Endless lectures</h3><p>So much to learn, and you kept showing up.</p></div></article>
-        <article class="timeline-item reveal"><span class="timeline-icon">😭</span><div><h3>Stress, tears & difficult days</h3><p>Even the hard days became part of your strength.</p></div></article>
-        <article class="timeline-item reveal"><span class="timeline-icon">🏥</span><div><h3>Clinical rotations</h3><p>Learning by being there, caring as you go.</p></div></article>
-        <article class="timeline-item reveal"><span class="timeline-icon">🩺</span><div><h3>Countless patients and lessons</h3><p>Each one bringing you closer to the doctor you are.</p></div></article>
-        <article class="timeline-item last reveal"><span class="timeline-icon">❤️</span><div><h3>And somehow... you kept going.</h3><p>That is something extraordinary.</p></div></article>
-      </div>
-    </section>
+  <section class="plan" id="plan" aria-labelledby="plan-title" hidden>
+    <div class="section-heading reveal">
+      <p class="eyebrow">You get to choose</p>
+      <h2 id="plan-title">Pick our little escape, Miss Universe</h2>
+      <p>A time and a bookish stop. That’s all I need.</p>
+    </div>
+    <form id="plan-form" novalidate>
+      <fieldset class="reveal">
+        <legend><span class="step">01</span> What time suits you, pretty thing?</legend>
+        <p class="hint">Anything from 9 in the morning to noon ☀️</p>
+        <div class="time-options">
+          <label class="choice"><input type="radio" name="time" value="9:00 AM" required><span>9:00 <small>AM</small></span></label>
+          <label class="choice"><input type="radio" name="time" value="10:00 AM"><span>10:00 <small>AM</small></span></label>
+          <label class="choice"><input type="radio" name="time" value="11:00 AM"><span>11:00 <small>AM</small></span></label>
+          <label class="choice"><input type="radio" name="time" value="12:00 PM"><span>12:00 <small>PM</small></span></label>
+        </div>
+      </fieldset>
+      <fieldset class="reveal">
+        <legend><span class="step">02</span> Where should we get lost, bookworm?</legend>
+        <p class="hint">Pick your happy place 📚</p>
+        <div class="place-options">
+          <div class="place-card">
+            <input id="book-cafe" type="radio" name="place" value="Book Cafe" required>
+            <label for="book-cafe"><span class="place-icon" aria-hidden="true">☕</span><span class="place-copy"><strong>Book Cafe</strong><small>Cozy corners, good coffee, zero rush</small></span><span class="check" aria-hidden="true">♡</span></label>
+            <a href="https://www.instagram.com/book_cafe.lk/" target="_blank" rel="noopener noreferrer">Peek at their Instagram ↗</a>
+          </div>
+          <div class="place-card">
+            <input id="expographic" type="radio" name="place" value="Expographic Bookstore">
+            <label for="expographic"><span class="place-icon" aria-hidden="true">📖</span><span class="place-copy"><strong>Expographic Bookstore</strong><small>Shelves for days. Dangerous for the wallet</small></span><span class="check" aria-hidden="true">♡</span></label>
+            <a href="https://www.instagram.com/expographicbookstore/" target="_blank" rel="noopener noreferrer">Peek at their Instagram ↗</a>
+          </div>
+          <div class="place-card">
+            <input id="surprise" type="radio" name="place" value="Surprise me">
+            <label for="surprise"><span class="place-icon" aria-hidden="true">🐚</span><span class="place-copy"><strong>Surprise me</strong><small>I’ll pick something good, promise</small></span><span class="check" aria-hidden="true">♡</span></label>
+          </div>
+          <div class="place-card">
+            <input id="own" type="radio" name="place" value="own">
+            <label for="own"><span class="place-icon" aria-hidden="true">💡</span><span class="place-copy"><strong>I have a better idea</strong><small>Suggest your own spot</small></span><span class="check" aria-hidden="true">♡</span></label>
+            <div class="own-wrap" id="own-wrap" hidden>
+              <input id="own-place" type="text" maxlength="80" placeholder="Where should we go?" autocomplete="off" aria-label="Your suggested place">
+            </div>
+          </div>
+        </div>
+      </fieldset>
+      <p class="formerr" id="formerr" role="alert" hidden></p>
+      <button class="button submit reveal" type="submit">Lock it in ♡</button>
+    </form>
 
-    <section class="section memories" id="photos" aria-labelledby="photos-title">
-      <div class="section-heading reveal"><p class="eyebrow">A few favorite moments</p><h2 id="photos-title">Look at you<br>now<span class="rose">.</span></h2><p>All the work, all the growth, all the moments that brought you here.</p></div>
-      <div class="photo-grid">
-        <!-- Replace these files whenever you like; keep these filenames or update src here. -->
-        <figure class="polaroid tilt-left reveal"><div class="photo-frame"><img src="assets/photo1.JPG" alt="Judy, smiling" loading="lazy"><div class="photo-placeholder"><span>♡</span><small>photo coming soon</small></div></div><figcaption>A moment worth keeping</figcaption></figure>
-        <figure class="polaroid tilt-right reveal"><div class="photo-frame"><img src="assets/photo2.png" alt="Judy in a favorite moment" loading="lazy"><div class="photo-placeholder"><span>♡</span><small>photo coming soon</small></div></div><figcaption>One of the good days</figcaption></figure>
-        <figure class="polaroid tilt-right reveal"><div class="photo-frame"><img src="assets/photo3.png" alt="Judy, captured in a happy moment" loading="lazy"><div class="photo-placeholder"><span>♡</span><small>photo coming soon</small></div></div><figcaption>All that hard work</figcaption></figure>
-        <figure class="polaroid tilt-left reveal"><div class="photo-frame"><img src="assets/photo4.png" alt="A favorite photo of Judy" loading="lazy"><div class="photo-placeholder"><span>♡</span><small>photo coming soon</small></div></div><figcaption>And everything ahead</figcaption></figure>
+    <div class="ticket" id="ticket" aria-live="polite" hidden>
+      <div class="ticket-icon" aria-hidden="true">🔖</div>
+      <p class="eyebrow">Locked in!</p>
+      <p class="meet-note">I’m excited to meet you! </p>
+      <img class="ticket-image" src="assets/bookworm-ocean.png" alt="A book lover enjoying an illustrated book beside a tropical ocean, with travel and marine life details">
+      <h2 id="ticket-title"></h2>
+      <p class="when" id="ticket-line"></p>
+      <figure class="quote-card">
+        <blockquote>“When someone is close by, you just know it.”</blockquote>
+        <figcaption>― James Dashner, <a href="https://www.goodreads.com/work/quotes/6574198" target="_blank" rel="noopener noreferrer"><cite>The Scorch Trials</cite></a></figcaption>
+      </figure>
+      <hr class="dash">
+      <p class="eyebrow">Bring</p>
+      <ul class="bring"><li>A tote bag</li><li>Your curious mind</li><li>Your cute smile </li></ul>
+      <div class="actions">
+        <a class="button wa" id="wa" href="#" target="_blank" rel="noopener noreferrer">Send my pick 💬</a>
+        <button class="link" id="change" type="button">Change my pick</button>
       </div>
-      <p class="photo-tip reveal">Big memories, very big achievement.</p>
-    </section>
+    </div>
+  </section>
+</main>
+<footer>made with a little sea breeze 🌊</footer>
 
-    <section class="section reminder" id="reminder" aria-labelledby="reminder-title">
-      <div class="reminder-card reveal">
-        <span class="card-heart" aria-hidden="true">♡</span><p class="eyebrow">A reminder for tomorrow</p>
-        <h2 id="reminder-title">You don't have to be perfect.</h2>
-        <div class="reminder-copy"><p>you've already done something incredibly hard.</p><p>You studied when you were tired.<br>You kept going through the difficult days.<br>You made it all the way here.</p><p>Take each part as it comes. One question, one moment, one breath at a time.</p><p><strong>I believe in you. And I'm so proud of you.</strong></p></div>
-        <div class="breath"><span></span><span></span><span></span></div>
-        <p class="reminder-close">Take a breath.<br>Listen carefully.<br>Trust the work you've put in.</p>
-        <p class="doctor-line">You've got this, Champ.</p>
-      </div>
-    </section>
+<script>
+// WhatsApp number: 0713011088 in international form (Sri Lanka = 94, no leading 0)
+const WHATSAPP_NUMBER = "94713011088";
 
-    <section class="section exam-plan" id="exam-plan" aria-labelledby="exam-title">
-      <div class="section-heading reveal"><p class="eyebrow">For tomorrow</p><h2 id="exam-title">One part<br>at a time<span class="rose">.</span></h2><p>It’s a lot, but you don't have to carry it all at once.</p></div>
-      <div class="exam-list">
-        <details class="exam-card reveal"><summary><span class="exam-number">01</span><span class="exam-title">Long case</span><span class="exam-toggle" aria-hidden="true">+</span></summary><div class="exam-tip"><p>Take a moment to settle in, listen closely, and work through it step by step. You know how to think things through.</p><small>You've got time to find your rhythm.</small></div></details>
-        <details class="exam-card reveal"><summary><span class="exam-number">02</span><span class="exam-title">Short case one</span><span class="exam-toggle" aria-hidden="true">+</span></summary><div class="exam-tip"><p>Focus on what's in front of you. Start with what you know and let your preparation guide you.</p><small>One clear thought at a time.</small></div></details>
-        <details class="exam-card reveal"><summary><span class="exam-number">03</span><span class="exam-title">Short case two</span><span class="exam-toggle" aria-hidden="true">+</span></summary><div class="exam-tip"><p>A fresh case, a fresh start. Take a breath and give it your attention.</p><small>You don't need to rush to be good.</small></div></details>
-        <details class="exam-card reveal"><summary><span class="exam-number">04</span><span class="exam-title">Exam one</span><span class="exam-toggle" aria-hidden="true">+</span></summary><div class="exam-tip"><p>Read each question carefully, trust what you've learned, and keep moving.</p><small>If one question feels hard, the next is still waiting.</small></div></details>
-        <details class="exam-card reveal"><summary><span class="exam-number">05</span><span class="exam-title">Exam two</span><span class="exam-toggle" aria-hidden="true">+</span></summary><div class="exam-tip"><p>A fresh start. Take a breath, find your pace, and do the best you can with each question.</p><small>You've prepared for this moment.</small></div></details>
-        <details class="exam-card reveal"><summary><span class="exam-number">06</span><span class="exam-title">Viva one</span><span class="exam-toggle" aria-hidden="true">+</span></summary><div class="exam-tip"><p>Pause, gather your thoughts, then answer as clearly as you can.</p><small>You are allowed to take a breath.</small></div></details>
-        <details class="exam-card reveal"><summary><span class="exam-number">07</span><span class="exam-title">Viva two</span><span class="exam-toggle" aria-hidden="true">+</span></summary><div class="exam-tip"><p>Listen to the question and take it in small pieces. Your knowledge is there.</p><small>Steady and thoughtful is more than enough.</small></div></details>
-        <details class="exam-card reveal"><summary><span class="exam-number">08</span><span class="exam-title">Viva three</span><span class="exam-toggle" aria-hidden="true">+</span></summary><div class="exam-tip"><p>Last one. Let yourself feel proud that you made it this far, then give it your best.</p><small>I'm cheering for you through every minute.</small></div></details>
-      </div>
-      <div class="warmup-launch reveal"><p>Want a few quick Pediatrics questions?</p><button class="button button-primary" id="warmup-button" aria-expanded="false" aria-controls="warmup">Wanna warm up?</button></div>
-      <div class="warmup" id="warmup" hidden>
-        <div class="warmup-heading"><p class="eyebrow">Quick recall round</p><h3>You've got this, Judy.</h3><p>Pick an answer to reveal it and a quick explanation.</p></div>
-        <div class="warmup-progress"><span id="warmup-progress-label">Question 1 of 10</span><div class="warmup-track"><span id="warmup-progress-fill"></span></div></div>
-        <div id="warmup-question" aria-live="polite"></div>
-        <p class="warmup-note">For exam practice; follow your course and local protocols.</p>
-      </div>
-    </section>
+const $ = s => document.querySelector(s);
+const yes = $('#yes'), no = $('#no'), slot = $('#slot'), plan = $('#plan'), hint = $('#nohint');
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const teases = ["Nice try, ocean girl 🌊","That button is shy 🐚","Too slow, pretty thing","Only one right answer 📖","The sea says yes ☼","Almost! Not quite 😌"];
+let dodges = 0, floating = false;
 
-    <section class="section final full-screen" id="final" aria-labelledby="final-title">
-      <div class="final-orbit" aria-hidden="true">♡</div>
-      <div class="final-content reveal"><p class="eyebrow">One last thing</p><h2 id="final-title">Tomorrow, walk in knowing how much you've already accomplished.</h2><p class="final-emphasis">Whatever happens, I'm proud of you.</p><p>You've worked so hard to get here.</p><p>Take it one part at a time. You can do this.</p><h3>GOOD LUCK,<br>JUDY</h3><button class="button button-primary" id="ready-button">I'M READY</button></div>
-      <div class="celebration" id="celebration" hidden aria-live="polite"><div class="celebration-icons" aria-hidden="true">🩺　♡</div><p class="eyebrow">This is your moment</p><h2 tabindex="-1">MBBS FINAL BOSS:<br><span>ALMOST DEFEATED</span></h2><p>Go get that degree, Dr.Shavindi.</p><p class="cheering">I'll be cheering for you.</p> <br><br><br><br><br><p> PS:ෆේල් වෙලානම් එන්න එපා ඇ. <br><br>lol jk, I know you will do the best </p></div>
-      <canvas id="confetti" aria-hidden="true"></canvas>
-    </section>
-  </main>
-  <footer>made for you, with love <span>♡</span></footer>
+function pointerXY(e){
+  const t = e.touches && e.touches[0];
+  return t ? {x:t.clientX,y:t.clientY} : (e.clientX!=null ? {x:e.clientX,y:e.clientY} : null);
+}
+
+function dodge(e){
+  if (e && e.cancelable) e.preventDefault();
+  if (e && e.stopPropagation) e.stopPropagation();
+  const r = no.getBoundingClientRect();
+  if (!floating){
+    slot.style.width = r.width + 'px'; slot.style.height = r.height + 'px';
+    no.style.position = 'fixed'; no.style.left = r.left + 'px'; no.style.top = r.top + 'px';
+    no.style.margin = '0'; no.offsetWidth; floating = true;
+  }
+  const w = no.offsetWidth, h = no.offsetHeight, pad = 12;
+  const vw = innerWidth, vh = innerHeight;
+  const yr = yes.getBoundingClientRect();
+  const p = e ? pointerXY(e) : null;
+  let x, y, tries = 0;
+  do {
+    x = pad + Math.random() * Math.max(1, vw - w - 2*pad);
+    y = pad + Math.random() * Math.max(1, vh - h - 2*pad);
+    const hitsYes = x < yr.right+24 && x+w > yr.left-24 && y < yr.bottom+24 && y+h > yr.top-24;
+    const nearPointer = p && Math.hypot(x+w/2-p.x, y+h/2-p.y) < 140;
+    if (!hitsYes && !nearPointer) break;
+  } while (++tries < 40);
+  no.style.left = x + 'px'; no.style.top = y + 'px';
+  dodges++;
+  hint.textContent = teases[(dodges-1) % teases.length];
+  yes.style.setProperty('--yes-scale', Math.min(1 + dodges*0.04, 1.3));
+}
+
+['pointerenter','pointerdown','mouseover','mousedown','focus','click','contextmenu']
+  .forEach(ev => no.addEventListener(ev, dodge));
+no.addEventListener('touchstart', dodge, {passive:false});
+no.addEventListener('touchend', e => e.preventDefault(), {passive:false});
+no.addEventListener('keydown', e => { e.preventDefault(); dodge(e); });
+addEventListener('resize', () => {
+  if (!floating) return;
+  const w = no.offsetWidth, h = no.offsetHeight;
+  no.style.left = Math.min(parseFloat(no.style.left), innerWidth - w - 12) + 'px';
+  no.style.top = Math.min(parseFloat(no.style.top), innerHeight - h - 12) + 'px';
+});
+
+yes.addEventListener('click', () => {
+  no.style.display = 'none'; slot.style.display = 'none';
+  hint.style.color = 'var(--deep)'; hint.textContent = 'Yay! Scroll down, ocean girl 🐚';
+  yes.disabled = true; yes.style.opacity = .7;
+  $('#intro').innerHTML = 'Good answer. Now the fun part.';
+  plan.hidden = false; plan.classList.add('open');
+  watchReveals();
+  confetti();
+  setTimeout(() => plan.scrollIntoView({behavior: reduce ? 'auto' : 'smooth'}), 450);
+});
+
+function watchReveals(){
+  const els = plan.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window)) { els.forEach(el => el.classList.add('in')); return; }
+  const io = new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } }), {threshold:.15});
+  els.forEach(el => io.observe(el));
+}
+
+function confetti(){
+  if (reduce) return;
+  const bits = ['🐚','🌊','📖','✨','🤍'];
+  for (let i = 0; i < 26; i++){
+    const s = document.createElement('span');
+    s.className = 'confetti';
+    s.textContent = bits[i % bits.length];
+    s.style.left = Math.random()*100 + 'vw';
+    s.style.fontSize = (16 + Math.random()*16) + 'px';
+    s.style.animationDuration = (2.4 + Math.random()*2) + 's';
+    s.style.animationDelay = (Math.random()*.6) + 's';
+    document.body.appendChild(s);
+    setTimeout(() => s.remove(), 5500);
+  }
+}
+
+const form = $('#plan-form'), ticket = $('#ticket');
+const ownRadio = $('#own'), ownInput = $('#own-place'), ownWrap = $('#own-wrap');
+form.querySelectorAll('input[name="place"]').forEach(r => r.addEventListener('change', () => {
+  const on = ownRadio.checked;
+  ownWrap.hidden = !on; ownInput.required = on;
+  if (on) ownInput.focus();
+}));
+
+form.addEventListener('submit', e => {
+  e.preventDefault();
+  const data = new FormData(form);
+  const time = data.get('time'), choice = data.get('place');
+  const err = $('#formerr');
+  const bad = !time ? 'Pick a time first, pretty thing ☀️'
+            : !choice ? 'Now pick a place, bookworm 📚'
+            : (choice === 'own' && !ownInput.value.trim()) ? 'Tell me where you’d like to go 💡' : '';
+  if (bad){
+    err.textContent = bad; err.hidden = false;
+    if (choice === 'own' && time) ownInput.focus();
+    return;
+  }
+  err.hidden = true;
+  const custom = choice === 'own', surprise = choice === 'Surprise me';
+  const place = custom ? ownInput.value.trim() : choice;
+  $('#ticket-title').textContent = surprise ? `A surprise at ${time}` : `${place} at ${time}`;
+  $('#ticket-line').textContent = surprise
+    ? 'I’ll pick somewhere good, then we chase the sea breeze. Wear comfy shoes. 🌊'
+    : custom
+      ? 'Ooh, your pick. I’m already curious. Sea breeze after. 🌊'
+      : 'Then we chase the sea breeze after. I’ll save you the best seat. 🌊';
+  const where = surprise ? 'Surprise me' : custom ? `${place} (my idea)` : place;
+  const msg = `Okay, I'm in! 🐚\nTime: ${time}\nPlace: ${where}`;
+  const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+  $('#wa').href = url;
+  form.hidden = true; ticket.hidden = false;
+  confetti();
+  ticket.scrollIntoView({behavior: reduce ? 'auto' : 'smooth', block:'center'});
+});
+$('#change').addEventListener('click', () => {
+  ticket.hidden = true; form.hidden = false;
+  form.scrollIntoView({behavior: reduce ? 'auto' : 'smooth'});
+});
+</script>
 </body>
 </html>
